@@ -86,3 +86,35 @@ CREATE TABLE public.traffic_data_by_unit (
 	CONSTRAINT traffic_data_by_unit_pk PRIMARY KEY (unit_code, std_date, inout_name, tcs_car_type_cd)
 );
 
+CREATE TABLE IF NOT EXISTS public.weather_data(
+	weather_data_id serial NOT NULL PRIMARY KEY,
+	created_at timestamptz NULL,
+	updated_at timestamptz NULL,
+	forecast_time timestamptz NULL UNIQUE,
+	temp numeric NULL,
+	hum numeric NULL,
+	sky_status varchar(6) NULL,
+	lightning_strike numeric NULL,
+	wind_direction numeric NULL,
+	wind_speed numeric NULL,
+	rainfall numeric NULL,
+	rainfall_type varchar(6) NULL,
+	east_west_wind_component numeric NULL,
+	south_north_wind_component numeric NULL
+);
+
+ALTER TABLE public.weather_data 
+ADD CONSTRAINT weather_data_forecast_time_unique UNIQUE (forecast_time);
+
+COMMENT ON COLUMN public.weather_data.created_at IS '생성 시간';
+COMMENT ON COLUMN public.weather_data.forecast_time IS '예보 시간';
+COMMENT ON COLUMN public.weather_data.temp IS '기온 (℃)';
+COMMENT ON COLUMN public.weather_data.hum IS '습도 (%)';
+COMMENT ON COLUMN public.weather_data.sky_status  IS '하늘상태 (Code 501)';
+COMMENT ON COLUMN public.weather_data.lightning_strike IS '낙뢰 (kA)';
+COMMENT ON COLUMN public.weather_data.wind_direction IS '풍향 (deg)';
+COMMENT ON COLUMN public.weather_data.wind_speed IS '풍속 (m/s)';
+COMMENT ON COLUMN public.weather_data.rainfall IS '시간당 강우량 (mm)';
+COMMENT ON COLUMN public.weather_data.rainfall_type IS '강수 형태(Code 502)';
+COMMENT ON COLUMN public.weather_data.east_west_wind_component IS '동서바람성분 (m/s): 동(+표기), 서(-표기)';
+COMMENT ON COLUMN public.weather_data.south_north_wind_component IS '남북바람성분 (m/s) 북(+표기), 남(-표기)';
