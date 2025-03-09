@@ -1,0 +1,14 @@
+services:
+  metabase:
+    image: metabase/metabase:latest
+    restart: always
+    container_name: metabase
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - metabase-data:/metabase-data
+
+volumes:
+  metabase-data:
