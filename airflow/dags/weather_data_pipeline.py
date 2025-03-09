@@ -14,12 +14,12 @@ default_args = {
     'owner': 'airflow',
     'retries': 5,
     'retry_delay': timedelta(seconds=30),
-    'start_date': datetime.now(pytz.timezone('Asia/Seoul')),
 }
 
 
 with DAG(
     dag_id='weather_data_pipeline',
+    start_date=datetime(2025, 3, 8),
     default_args=default_args,
     schedule_interval='30 * * * *',
     catchup=False, # 이전 실행 날짜에 대한 DAG 실행을 수행할지 여부 (Default True)
