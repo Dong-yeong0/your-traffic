@@ -18,16 +18,6 @@ CATEGORY = {
     "WSD": "wind_speed",
 }
 
-RAINFALL_TYPE = {
-    "0": None,
-    "1": "rain",
-    "2": "rain_snow",
-    "3": "snow",
-    "5": "raindrop",
-    "6": "raindrops_of_snow",
-    "7": "snowing",
-}
-
 def preprocessing(ti):
     weather_data = ti.xcom_pull(task_ids='request_weather_data')
     if not weather_data:
@@ -42,20 +32,7 @@ def preprocessing(ti):
     for data in sorted_datas:
         category = CATEGORY.get(data.get("category"), "")
         fcst_value = data.get("fcstValue", None)
-        if category == "sky_status":
-            sky_status = int(fcst_value or 0)
-            # sky_status = 맑음(1), 구름조금(2), 구름많음(3), 흐림(4)
-            if sky_status == 1:
-                fcst_value = "sunny"
-            elif sky_status == 2:
-                fcst_value = "partly_cloudy"
-            elif sky_status == 3:
-                fcst_value = "mostly_cloudy"
-            elif sky_status == 4:
-                fcst_value = "cloudy"
-        elif category == "rainfall_type":
-            fcst_value = RAINFALL_TYPE.get(fcst_value, "")
-        elif category == "rainfall":
+        if category == "rainfall":
             if fcst_value == "강수없음" or "미만" in fcst_value:
                 fcst_value = 0
             else:
