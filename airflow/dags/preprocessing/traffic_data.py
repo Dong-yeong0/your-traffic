@@ -65,6 +65,9 @@ def preprocessing_data(ti: TaskInstance):
     # Rename the column (traffic_amout -> traffic_amount)
     df.rename(columns={'traffic_amout': 'traffic_amount'}, inplace=True)
 
+    df['unit_code'] = df['unit_code'].fillna('').astype(str)
+    df['unit_code'] = df['unit_code'].str.strip()
+
     # Change datetime format
     df['std_hour'] = df['std_hour'].str.strip()
     df['std_date_str'] = df['std_date'] + ' ' + df['std_hour'] + ':00:00'
